@@ -60,29 +60,30 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-public ResponseEntity<ProjectDTO> updateProject(@PathVariable Long id, @RequestBody ProjectDTO projectDTO) {
-    try {
-        Project existingProject = projectService.getProjectById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
-        
-        // Обновляем поля
-        existingProject.setName(projectDTO.getName());
-        existingProject.setDescription(projectDTO.getDescription());
-        existingProject.setClientName(projectDTO.getClientName());
-        existingProject.setBudget(projectDTO.getBudget());
-        existingProject.setStatus(projectDTO.getStatus());
-        existingProject.setStartDate(projectDTO.getStartDate());
-        existingProject.setEndDate(projectDTO.getEndDate());
-        
-        Project updatedProject = projectService.saveProject(existingProject);
-        
-        // Конвертируем в DTO для ответа
-        ProjectDTO responseDTO = convertToDTO(updatedProject);
-        return ResponseEntity.ok(responseDTO);
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<ProjectDTO> updateProject(@PathVariable Long id, @RequestBody ProjectDTO projectDTO) {
+        try {
+            Project existingProject = projectService.getProjectById(id)
+                    .orElseThrow(() -> new RuntimeException("Project not found"));
+            
+            // Обновляем поля
+            existingProject.setName(projectDTO.getName());
+            existingProject.setDescription(projectDTO.getDescription());
+            existingProject.setClientName(projectDTO.getClientName());
+            existingProject.setBudget(projectDTO.getBudget());
+            existingProject.setStatus(projectDTO.getStatus());
+            existingProject.setStartDate(projectDTO.getStartDate());
+            existingProject.setEndDate(projectDTO.getEndDate());
+            
+            Project updatedProject = projectService.saveProject(existingProject);
+            
+            // Конвертируем в DTO для ответа
+            ProjectDTO responseDTO = convertToDTO(updatedProject);
+            return ResponseEntity.ok(responseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-}
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         projectService.deleteProject(id);
